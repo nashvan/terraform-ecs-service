@@ -113,3 +113,9 @@ variable "health_check_path" {
   default     = "/"
   description = "The health check path used by the target group"
 }
+
+variable "volumes" {
+  type        = list(map(string))
+  default     = []
+  description = "define the volume that can be mounted to the container"
+}
