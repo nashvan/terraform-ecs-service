@@ -20,6 +20,23 @@ resource "aws_ecs_task_definition" "my_first_task" {
   memory                   = 256
   cpu                      = 128
   execution_role_arn       = aws_iam_role.ecsTaskExecutionRole.arn
+  # network_mode             = "awsvpc"
+  
+  dynamic "volume" {
+    for_each = var.volumes
+    content {
+      name = volume.value["name"]
+      efs_volume_configuration {
+        file_system_id          = volume.value["efs_id"]
+        root_directory          = lookup(each.value, "root_directory", null)
+        transit_encryption      = "ENABLED"
+        transit_encryption_port = 2999
+        authorization_config {
+          access_point_id = lookup(each.value, "access_point", null)
+          iam             = "ENABLED"
+        }
+      }
+    }
 }
 
 resource "aws_iam_role" "ecsTaskExecutionRole" {
