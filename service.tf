@@ -12,6 +12,24 @@ module "ecs-service" {
   record_set_name = local.account_config["record_set_name"]
   cluster_name    = "xyz-abc-${var.environment}-ecs-cluster"
   prefix_name     = "${local.service_name}-${local.app_name}-${var.environment}"
+  
+  # Optionally you can have EFS volume attached to the ECS if needed as below
+  #volumes = [
+  #  {
+  #    name      = "static_html"
+  #    file_system_id = aws_efs_file_system.fs.id
+  #    root_directory = 
+  #    access_point = refere to access point
+
+  #  },
+  #  {
+  #    name      = "static_html"
+  #    file_system_id = aws_efs_file_system.fs.id
+  #    root_directory = 
+  #    access_point = refere to access point
+
+  #  }
+  #]
 
   tags = {
     ApplicationID = local.application_id
